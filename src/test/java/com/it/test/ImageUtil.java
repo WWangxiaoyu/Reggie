@@ -47,10 +47,10 @@ public class ImageUtil {
         Graphics2D g2d = buffImg.createGraphics();
 
         // ----------  增加下面的代码使得背景透明  -----------------
-        buffImg = g2d.getDeviceConfiguration()
-                .createCompatibleImage(width, height, Transparency.TRANSLUCENT);
-        g2d.dispose();
-        g2d = buffImg.createGraphics();
+//        buffImg = g2d.getDeviceConfiguration()
+//                .createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+//        g2d.dispose();
+//        g2d = buffImg.createGraphics();
         // ----------  背景透明代码结束  -----------------
 
         // 设置对线段的锯齿状边缘处理
@@ -209,7 +209,7 @@ public class ImageUtil {
         // 给图片添加文字水印
         int w = (int)Math.ceil(width);
         int h = (int)Math.ceil(height);
-        BufferedImage bi1 = waterMarkByText(w, h, text, Color.BLACK, font, 0d, 1f);
+        BufferedImage bi1 = waterMarkByText(w, h, text, Color.GREEN, font, 0d, 1f);
         try {
             // 写入文件
             ByteArrayOutputStream out = new ByteArrayOutputStream();

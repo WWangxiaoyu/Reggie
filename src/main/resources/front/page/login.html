@@ -74,7 +74,7 @@
                 async btnLogin(){
                     if(this.form.email && this.form.code){
                         this.loading = true
-                        const res = await loginApi({email:this.form.email})
+                        const res = await loginApi({email:this.form.email,code:this.form.code})
                         this.loading = false
                         if(res.code === 1){
                             sessionStorage.setItem("userEmail",this.form.email)

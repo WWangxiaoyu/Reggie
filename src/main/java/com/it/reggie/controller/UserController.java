@@ -1,5 +1,6 @@
 package com.it.reggie.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.it.reggie.common.R;
 import com.it.reggie.entity.User;
 import com.it.reggie.service.UserService;
@@ -33,7 +34,7 @@ public class UserController {
         String subject = "本次登录验证码";
         if(StringUtils.isNotEmpty(email)){
             String code = ValidateCodeUtils.generateValidateCode(4).toString();
-            String context = "欢迎使用瑞吉餐购，登录验证码为: " + code + ", 五分钟内有效，请妥善保管!";
+            String context = "欢迎使使用瑞吉，登录验证码为: " + code + ", 五分钟内有效，请妥善保管!";
             log.info("code={}", code);
 
             //真正的发送邮箱验证码
@@ -54,11 +55,35 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public R<String> login(@RequestBody Map map, HttpSession session){
+    public R<User> login(@RequestBody Map map, HttpSession session){
         log.info(map.toString());
 
-        //
+        //获取邮箱
+        String email = map.get("email").toString();
 
+        //获取验证码
+        String code = map.get("code").toString();
+
+        //从session中获取保存的验证码
+        Object codeInSession = session.getAttribute(email);
+
+        //进行验证码的对比（页面提交的和session中的验证码）
+        if(codeInSession != null && codeInSession.equals(code)){
+            //比对成功-->登陆成功
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getEmail, email);
+
+            User user = userService.getOne(queryWrapper);
+            if(user == null){
+                //判断当前邮箱对应的是否是新用户，是就自动注册
+                user = new User();
+                user.setEmail(email);
+                user.setStatus(1);
+                userService.save(user);
+            }
+            session.setAttribute("user", user.getId());
+            return R.success(user);
+        }
         return R.error("短信发送失败");
     }
 }

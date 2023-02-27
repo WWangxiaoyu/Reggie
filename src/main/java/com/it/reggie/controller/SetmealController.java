@@ -104,4 +104,23 @@ public class SetmealController {
 
         return R.success("删除套餐数据成功");
     }
+
+    /**
+     * 根据条件查询套餐数据
+     * 不加@RequestBody注解，因为url中传进的参数是按键值对的形式，不是按照json格式
+     * @RequestBody对应json类型，key-value则不用加注解
+     * @param setmeal
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal){
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
+        queryWrapper.eq(setmeal.getStatus() != null, Setmeal::getStatus, setmeal.getStatus());
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+
+        List<Setmeal> list = setmealService.list(queryWrapper);
+
+        return R.success(list);
+    }
 }

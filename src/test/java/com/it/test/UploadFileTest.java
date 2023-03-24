@@ -3,6 +3,7 @@ package com.it.test;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.awt.*;
 import java.text.DateFormat;

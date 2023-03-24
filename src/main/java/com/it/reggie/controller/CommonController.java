@@ -28,6 +28,7 @@ public class CommonController {
     @Value("${reggie.path}")
     private String basePath;
 
+
     /**
      * 文件上传
      * 使用Spring框架中的MultipartFile类来处理上传下载
